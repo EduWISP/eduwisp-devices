@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eduwisp-devices"
+version = "0.0.1"
+description = "EduWISP: inventario, registrazione e gestione dei dispositivi, indipendente dalla piattaforma"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "NOTICE.md"]
+requires-python = ">=3.13"
+authors = [{ name = "Michele Salerno e i contributori di EduWISP" }]
+dependencies = [
+    "Django>=5.2,<5.3",
+    "djangorestframework>=3.16",
+    "segno>=1.6",
+    "eduwisp-users",
+    "eduwisp-school",
+    "eduwisp-protocol",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "pytest-django>=4.9"]
+
+[project.urls]
+Homepage = "https://github.com/EduWISP/eduwisp-devices"
+Documentation = "https://eduwisp.github.io/docs/"
+
+[tool.setuptools.packages.find]
+include = ["eduwisp_devices*"]
+
+[tool.setuptools.package-data]
+eduwisp_devices = ["templates/**/*.html"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+extend-exclude = ["*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "DJ"]
