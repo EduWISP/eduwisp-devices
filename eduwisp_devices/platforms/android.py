@@ -12,8 +12,8 @@ import json
 from django.conf import settings
 
 PREFIX = "android.app.extra."
-EXTRA_SERVER_URL = "io.github.eduwisp.SERVER_URL"
-EXTRA_ENROLLMENT_TOKEN = "io.github.eduwisp.ENROLLMENT_TOKEN"
+EXTRA_SERVER_URL = "org.eduwisp.SERVER_URL"
+EXTRA_ENROLLMENT_TOKEN = "org.eduwisp.ENROLLMENT_TOKEN"
 
 
 def provisioning_payload(server_url: str, raw_token: str) -> str:

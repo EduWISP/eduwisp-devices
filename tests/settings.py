@@ -52,10 +52,10 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # EduWISP — valori fittizi, solo per test.
-EDUWISP_SERVER_URL = "https://eduwisp.example.invalid"
+EDUWISP_SERVER_URL = "https://demo.eduwisp.invalid"
 EDUWISP_POLL_INTERVAL_SECONDS = 900
 EDUWISP_ANDROID_DPC = {
-    "component_name": "io.github.eduwisp.dpc/.EduWispAdminReceiver",
-    "download_url": "https://eduwisp.example.invalid/dpc/eduwisp-dpc.apk",
+    "component_name": "org.eduwisp.dpc/.EduWispAdminReceiver",
+    "download_url": "https://demo.eduwisp.invalid/dpc/eduwisp-dpc.apk",
     "signature_checksum": "valore-fittizio-solo-per-test",
 }
