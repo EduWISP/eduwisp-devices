@@ -18,6 +18,7 @@ dependencies = [
     "eduwisp-users",
     "eduwisp-school",
     "eduwisp-protocol",
+    "eduwisp-audit",
 ]
 
 [project.optional-dependencies]
