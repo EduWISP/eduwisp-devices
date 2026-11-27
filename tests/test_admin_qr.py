@@ -72,3 +72,12 @@ def test_contenuto_qr_android(settings):
     assert extras[android.EXTRA_ENROLLMENT_TOKEN] == "token-di-prova"
     componente = dati["android.app.extra.PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME"]
     assert componente == settings.EDUWISP_ANDROID_DPC["component_name"]
+
+
+def test_qr_mantiene_le_app_di_sistema_e_imposta_lingua_e_fuso():
+    from eduwisp_devices.platforms import android
+
+    dati = json.loads(android.provisioning_payload("https://server.invalid", "token-di-prova"))
+    assert dati["android.app.extra.PROVISIONING_LEAVE_ALL_SYSTEM_APPS_ENABLED"] is True
+    assert dati["android.app.extra.PROVISIONING_LOCALE"] == "it_IT"
+    assert dati["android.app.extra.PROVISIONING_TIME_ZONE"] == "Europe/Rome"
