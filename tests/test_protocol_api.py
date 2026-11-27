@@ -147,4 +147,25 @@ def test_policy_predefinita(api, scuola, crea_token, richiesta):
     api.credentials(HTTP_AUTHORIZATION="Bearer " + dati["device_token"])
     policy = api.get(POLICY).json()
     assert policy["policy_version"] == 1
-    assert policy["settings"] == {"camera_disabled": False, "screen_capture_disabled": False}
+    assert policy["settings"] == {
+        "camera_disabled": False,
+        "screen_capture_disabled": False,
+        # Dispositivi per minori: VPN e DNS privato bloccati se la scuola non decide altrimenti
+        "vpn_config_disabled": True,
+        "private_dns_config_disabled": True,
+    }
+
+
+def test_contributi_di_altri_moduli(api, scuola, crea_token, richiesta, settings):
+    settings.EDUWISP_POLICY_PROVIDERS = [
+        "tests.providers.app_di_prova",
+        "tests.providers.nessun_contributo",
+    ]
+    _, raw = crea_token(scuola)
+    dati = registra(api, richiesta, raw)
+    api.credentials(HTTP_AUTHORIZATION="Bearer " + dati["device_token"])
+    policy = api.get(POLICY).json()
+    validate("policy", policy)
+    assert policy["apps"]["allowed"] == [{"id": "org.example"}]
+    base = DevicePolicy.objects.get(organization=scuola).version
+    assert policy["policy_version"] == base + 5

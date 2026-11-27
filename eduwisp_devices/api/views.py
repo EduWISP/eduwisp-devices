@@ -8,6 +8,7 @@ import uuid
 from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
+from django.utils.module_loading import import_string
 from eduwisp_protocol import PROTOCOL_VERSION, ProtocolError, validate
 from rest_framework import status
 from rest_framework.exceptions import ParseError, UnsupportedMediaType
@@ -130,6 +131,13 @@ class PolicyView(ProtocolView):
             "poll_interval_seconds": poll_interval(),
             "settings": policy.settings_dict(),
         }
+        # Contributi degli altri moduli (per esempio eduwisp-apps, ADR-0019): ciascuno
+        # aggiunge chiavi alla policy e una parte della versione, che resta crescente.
+        for percorso in getattr(settings, "EDUWISP_POLICY_PROVIDERS", []):
+            contributo = import_string(percorso)(device)
+            if contributo:
+                body.update(contributo["policy"])
+                body["policy_version"] += contributo.get("version", 0)
         famiglia = policy_section(device)
         if famiglia is not None:
             body["family_access"] = famiglia
