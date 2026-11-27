@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{# SPDX-License-Identifier: AGPL-3.0-or-later #}
+{% block content %}
+<div id="content-main">
+  <p><strong>{{ token.label }}</strong> — {{ token.organization }} · piattaforma {{ token.platform }}
+     · utilizzi {{ token.uses }}/{{ token.max_uses }} · scade il {{ token.expires_at }}</p>
+  {% if qr_svg %}
+    <div id="eduwisp-qr" style="background:#fff; display:inline-block; padding:1em">{{ qr_svg|safe }}</div>
+    <ol>
+      <li>Ripristina il tablet alle impostazioni di fabbrica.</li>
+      <li>Nella prima schermata di configurazione tocca 6 volte lo schermo: si apre il lettore di QR code.</li>
+      <li>Inquadra questo codice e segui le istruzioni.</li>
+    </ol>
+    <p><strong>Questo QR code non verrà più mostrato.</strong> Non condividerlo: chiunque lo possieda può registrare
+       dispositivi nella tua organizzazione finché il token è valido.</p>
+  {% endif %}
+  <p><a href="{% url 'admin:eduwisp_devices_enrollmenttoken_changelist' %}">Torna ai token</a></p>
+</div>
+{% endblock %}
