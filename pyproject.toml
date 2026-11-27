@@ -25,7 +25,7 @@ test = ["pytest>=8", "pytest-django>=4.9"]
 
 [project.urls]
 Homepage = "https://github.com/EduWISP/eduwisp-devices"
-Documentation = "https://eduwisp.github.io/docs/"
+Documentation = "https://eduwisp.org/docs/"
 
 [tool.setuptools.packages.find]
 include = ["eduwisp_devices*"]
