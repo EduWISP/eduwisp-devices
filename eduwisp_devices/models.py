@@ -103,6 +103,13 @@ class DevicePolicy(OrganizationOwned):
     screen_capture_disabled = models.BooleanField(
         "acquisizione dello schermo disattivata", default=False
     )
+    # Dispositivi per minori: niente VPN né DNS privato, che aggirano i filtri (ADR-0019).
+    vpn_config_disabled = models.BooleanField(
+        "VPN vietate",
+        default=True,
+        help_text="impedisce di configurare VPN: le app VPN non possono attivarsi",
+    )
+    private_dns_config_disabled = models.BooleanField("DNS privato non modificabile", default=True)
     updated_at = models.DateTimeField("aggiornata il", auto_now=True)
 
     class Meta:
@@ -123,6 +130,8 @@ class DevicePolicy(OrganizationOwned):
         return {
             "camera_disabled": self.camera_disabled,
             "screen_capture_disabled": self.screen_capture_disabled,
+            "vpn_config_disabled": self.vpn_config_disabled,
+            "private_dns_config_disabled": self.private_dns_config_disabled,
         }
 
 
