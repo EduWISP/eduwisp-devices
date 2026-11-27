@@ -16,6 +16,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from ..family import apply_choice, policy_section
 from ..models import Device, DevicePolicy, EnrollmentToken
 from ..secrets import check_secret, hash_secret
 
@@ -123,14 +124,16 @@ class PolicyView(ProtocolView):
             policy = DevicePolicy(organization=device.organization)
             policy.save()
         Device.objects.filter(pk=device.pk).update(last_seen_at=timezone.now())
-        return Response(
-            {
-                "protocol_version": PROTOCOL_VERSION,
-                "policy_version": policy.version,
-                "poll_interval_seconds": poll_interval(),
-                "settings": policy.settings_dict(),
-            }
-        )
+        body = {
+            "protocol_version": PROTOCOL_VERSION,
+            "policy_version": policy.version,
+            "poll_interval_seconds": poll_interval(),
+            "settings": policy.settings_dict(),
+        }
+        famiglia = policy_section(device)
+        if famiglia is not None:
+            body["family_access"] = famiglia
+        return Response(body)
 
 
 class StatusView(ProtocolView):
@@ -139,6 +142,11 @@ class StatusView(ProtocolView):
         if err:
             return err
         data = self.validated("status-report", request.data)
+        if "family_access_choice" in data:
+            try:
+                apply_choice(device, data["family_access_choice"])
+            except ValueError:
+                return error("invalid_request", "Data della scelta non valida.", 400)
         device.policy_version_applied = data["policy_version_applied"]
         device.compliant = data["compliant"]
         device.non_compliance = data.get("non_compliance", [])

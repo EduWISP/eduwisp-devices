@@ -8,7 +8,7 @@ Inventario, ciclo di vita, provisioning e comandi remoti dei dispositivi gestiti
 
 > 🧪 **Stato: prototipo v0.** Registrazione dei dispositivi con QR code, protocollo v0 e policy minima. La progettazione è nella [documentazione EduWISP](https://eduwisp.org/docs/moduli/mdm/).
 
-🇬🇧 *Inventory, lifecycle, provisioning and remote commands for managed devices, **platform-independent**: platform-specific features (Android first) come from agents via `eduwisp-protocol`. **Status: design phase**, no code yet. See the [design docs](https://eduwisp.org/docs/en/modules/mdm/).*
+🇬🇧 *Inventory, lifecycle, provisioning and remote commands for managed devices, **platform-independent**: platform-specific features (Android first) come from agents via `eduwisp-protocol`. **Status: prototype v0**: QR enrollment, protocol v0, minimal policy. See the [design docs](https://eduwisp.org/docs/en/modules/mdm/).*
 
 ## Documentazione / Documentation
 
