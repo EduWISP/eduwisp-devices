@@ -63,7 +63,9 @@ def test_minorenne_nessuna_domanda(api, tablet):
 
 def test_maggiorenne_sceglie_dal_tablet(api, tablet):
     _, studente = tablet
-    studente.adult_on = timezone.localdate() - timedelta(days=1)
+    studente.birth_date = timezone.localdate().replace(
+        year=timezone.localdate().year - 18
+    ) - timedelta(days=1)
     studente.save()
     policy = api.get(POLICY).json()
     validate("policy", policy)
@@ -103,7 +105,7 @@ def test_scelta_ignorata_se_non_richiesta(api, tablet):
 
 def test_data_non_valida(api, tablet):
     _, studente = tablet
-    studente.adult_on = date(2000, 1, 1)
+    studente.birth_date = date(1982, 1, 1)
     studente.save()
     scelta = {"granted": True, "decided_at": "ieri"}
     assert api.post(STATUS, stato(family_access_choice=scelta), format="json").status_code == 400
@@ -111,7 +113,7 @@ def test_data_non_valida(api, tablet):
 
 def test_dispositivo_condiviso_non_chiede(api, tablet):
     device, studente = tablet
-    studente.adult_on = date(2000, 1, 1)
+    studente.birth_date = date(1982, 1, 1)
     studente.save()
     a = DeviceAssignment.objects.get(device=device)
     a.ended_at = timezone.now()
